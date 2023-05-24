@@ -1,25 +1,36 @@
-import { HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { AnimeRoutingModule } from "./anime-routing.module";
 import { CardComponent } from "./card/card.component";
 import { ListarComponent } from "./pages/listar/listar.component";
-import { InfiniteScrollModule } from "ngx-infinite-scroll";
-import { ReactiveFormsModule } from "@angular/forms";
+import { HttpClientModule } from "@angular/common/http";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BuscarComponent } from "./pages/buscar/buscar.component";
-import { AnimeRouting } from "src/app/modules/anime/anime-routing.module";
-import { PagetitleComponent } from "src/app/shared/ui/pagetitle/pagetitle.component";
-import { SharedModule } from "src/app/cyptolanding/shared/shared.module";
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { UIModule } from "src/app/shared/ui/ui.module";
+import { TablaComponent } from "./pages/tabla/tabla.component";
+import { MostrarComponent } from "./pages/mostrar/mostrar.component";
+import { NgxPaginationModule } from "ngx-pagination";
+import { Ng2SearchPipeModule } from "ng2-search-filter";
 
 @NgModule({
-  declarations: [CardComponent, ListarComponent, BuscarComponent],
+  declarations: [
+    CardComponent,
+    ListarComponent,
+    BuscarComponent,
+    TablaComponent,
+    MostrarComponent,
+  ],
   imports: [
     CommonModule,
-    AnimeRouting,
+    AnimeRoutingModule,
     InfiniteScrollModule,
-    ReactiveFormsModule,
     HttpClientModule,
-    UIModule,
+    UIModule, //!Migas
+    ReactiveFormsModule,
+    FormsModule, //!Para el Modal
+    NgxPaginationModule, //!Para paginar
+    Ng2SearchPipeModule, //!Pa buscar
   ],
 })
 export class AnimeModule {}

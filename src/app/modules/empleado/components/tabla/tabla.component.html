@@ -1,0 +1,83 @@
+<div class="table-responsive mb-0">
+  <table class="table table-centered table-nowrap">
+    <thead class="table-light">
+      <tr>
+        <th style="width: 20px">
+          <div class="form-check font-size-16 align-middle">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="transactionCheck01"
+            />
+            <label class="form-check-label" for="transactionCheck01"></label>
+          </div>
+        </th>
+        <th class="align-middle">ID</th>
+        <th class="align-middle">Nombre completo</th>
+        <th class="align-middle">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="
+          let data of empleados.content
+            | paginate
+              : {
+                  itemsPerPage: empleados.pageable.pageSize,
+                  currentPage: empleados.pageable.pageNumber + 1,
+                  totalItems: empleados.totalElements
+                }
+        "
+      >
+        <td>
+          <div class="form-check font-size-16">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="transactionCheck{{ data.id }}"
+            />
+            <label
+              class="form-check-label"
+              for="transactionCheck{{ data.id }}"
+            ></label>
+          </div>
+        </td>
+        <td>
+          <a href="javascript: void(0);" class="text-body fw-bold">{{
+            data.id
+          }}</a>
+        </td>
+        <td>{{ data.nombre }} {{ data.apellido }}</td>
+        <td class="d-flex gap-2">
+          <button
+            class="btn btn-warning btn-sm btn-rounded"
+            (click)="openModal(content, data)"
+          >
+            <i class="fas fa-edit"></i>
+          </button>
+          <button
+            class="btn btn-danger btn-sm btn-rounded"
+            (click)="delete(data.id)"
+          >
+            <i class="fas fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+
+      <tr *ngIf="empleados.content.length == 0">
+        <td colspan="4" class="text-center">
+          {{ isLoading ? "Cargando..." : "No se encontraron resultados" }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="pagination pagination-rounded justify-content-end mb-2">
+    <pagination-controls
+      (pageChange)="pageChange($event)"
+    ></pagination-controls>
+  </div>
+
+  <ng-template #content role="document" let-modal id="modal-empleado">
+    <app-modal-crear-editar [modal]="modal"></app-modal-crear-editar>
+  </ng-template>
+</div>

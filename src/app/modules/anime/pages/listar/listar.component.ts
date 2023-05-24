@@ -1,65 +1,79 @@
-import { Component, OnInit, inject } from "@angular/core";
-import { FormControl } from "@angular/forms";
-import { debounceTime } from "rxjs/operators";
-import { IAnime } from "src/app/modules/anime/interface/anime";
-import { AnimeService } from "src/app/modules/anime/service/anime.service";
-
+import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
+import { IAnime } from '../../interface/anime';
+import { AnimeService } from '../../service/anime.service';
 @Component({
-  selector: "app-listar",
-  templateUrl: "./listar.component.html",
-  styleUrls: ["./listar.component.scss"],
+  selector: 'app-listar',
+  templateUrl: './listar.component.html',
+  styleUrls: ['./listar.component.scss']
 })
 export class ListarComponent implements OnInit {
-  breadcrums = [{ label: "Anime" }, { label: "Listar", active: true }];
+  breadCrumbItems: Array<{}>;
+
   cards: IAnime[] = [];
   offset = 0;
-  constructor(private animeService: AnimeService) {}
-  a: string | null = null;
-
-  cardText = new FormControl("");
+  // a!: string | null;
+  cardText = new FormControl();
+  constructor(private animeService: AnimeService) { }
 
   ngOnInit(): void {
-    this.buscarCards();
-    this.inputoReactivo();
+    this.breadCrumbItems = [{ label: 'Anime' }, { label: 'Listar', active: true }];
+
+    this.cards = [];
+    // this.buscarCards();
+    this.inputReactivo();
   }
 
-  inputoReactivo() {
-    this.cardText.valueChanges.pipe(debounceTime(300)).subscribe((value) => {
-      this.cards = [];
-      this.buscarCardsForma2(value);
-    });
+  inputReactivo() {
+    this.cardText.valueChanges
+      .pipe(debounceTime(1500)
+      ).subscribe((res) => {
+        this.cards = [];
+        this.buscarCardsForma2(res);
+      });
 
-    if (!this.cardText.touched) {
-      this.cards = [];
-      this.buscarCardsForma2(null);
-    }
+      if (!this.cardText.touched) {
+        this.cards = [];
+        this.buscarCardsForma2();
+      }
+
   }
 
   // onScroll(paraBuscar: string | null) {
-  // this.offset += 50;
-  /* this.buscarCards(); */
-  // console.log(this.a, this.offset);
-  // this.animeService.busquedas(this.a, this.offset);
+  //   console.log('scroll infinito')
+  //   this.offset += 50;
+  //   // this.buscarCards();
+  //   // this.buscarCardsForma2();
+  //   this.animeService.busquedas(this.a, this.offset);
+
   // }
 
-  onScroll() {
+
+  onScroll(){
     this.offset += 50;
-    this.buscarCards();
-  }
-
-  buscarCards() {
-    this.animeService.getCarsAnime(this.offset).subscribe((cards) => {
-      this.cards = [...this.cards, ...cards];
-    });
-  }
-
-  buscarCardsForma2(nombreCard: string | null) {
-    this.animeService.getCardsAnimeForma2(nombreCard).subscribe((cards) => {
-      this.cards = [...this.cards, ...cards];
-    });
+    this.buscarCardsForma2();
   }
 
   get resultados() {
     return this.animeService.cards;
   }
+
+
+  // buscarCards() {
+  //   this.animeService.getCardsAnime(this.offset).subscribe((res) => {
+  //     console.log(res);
+  //     this.cards = [...this.cards, ...res];
+  //   })
+  // }
+
+  buscarCardsForma2(nombreCard: string | null = null) {
+    this.animeService.getCardsAnimeForma2(nombreCard, this.offset).subscribe((res) => {
+      console.log(res)
+      this.cards = [...this.cards, ...res];
+
+    })
+  }
+
+
 }

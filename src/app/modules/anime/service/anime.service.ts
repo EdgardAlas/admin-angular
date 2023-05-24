@@ -1,53 +1,59 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable, inject } from "@angular/core";
-import { map } from "rxjs/operators";
-import { IAnime, ResponseAnime } from "src/app/modules/anime/interface/anime";
+import { Injectable } from '@angular/core';
+import { IAnime } from '../interface/anime';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root'
 })
 export class AnimeService {
-  http = inject(HttpClient);
+
+  url = 'https://db.ygoprodeck.com/api/v7/cardinfo.php';
+
   cards: IAnime[] = [];
-  url = "https://db.ygoprodeck.com/api/v7/cardinfo.php";
 
-  constructor() {}
 
-  getCarsAnime(offset = 0) {
-    return this.http
-      .get<ResponseAnime>(this.url, {
-        params: {
-          offset,
-          num: 50,
-        },
-      })
-      .pipe(map((res) => res.data));
+  constructor(private http: HttpClient) { }
+
+  getCardsAnime(offset = 0) {
+    const params: any = {
+      num: 50,
+      offset,
+    }
+
+    return this.http.get<IAnime[]>(this.url, { params }).pipe(map((res: any) => res.data));
+
   }
 
   getCardsAnimeForma2(nombreCard: string | null, offset = 0) {
-    console.log(nombreCard);
-    return this.http
-      .get<ResponseAnime>(this.url, {
-        params: {
-          offset,
-          num: 50,
-          fname: nombreCard || "",
-        },
-      })
-      .pipe(map((res) => res.data));
+    const params: any = {
+      num: 50,
+      offset,
+    }
+
+    if (nombreCard)
+      params.fname = nombreCard;
+    return this.http.get<IAnime[]>(this.url, { params }).pipe(map((res: any) => res.data));
+
   }
 
   busquedas(nombreCard: string | null, offset = 0) {
-    console.log(nombreCard);
-    if (nombreCard) {
-      this.getCardsAnimeForma2(nombreCard, offset).subscribe((cards) => {
-        console.log(cards);
-        this.cards = [...this.cards, ...cards];
-      });
-    } else {
-      this.getCarsAnime(offset).subscribe((cards) => {
-        this.cards = [...this.cards, ...cards];
-      });
+    const params: any = {
+      num: 50,
+      offset,
     }
+
+    if (nombreCard) {
+      this.cards = [];
+      params.fname = nombreCard;
+    }
+    return this.http.get<IAnime[]>(this.url, { params }).subscribe((resp: any) => {
+      console.log(resp.data)
+      this.cards = [...this.cards, ...resp.data]
+    });
+
+
   }
+
+
 }

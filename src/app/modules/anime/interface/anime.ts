@@ -1,8 +1,3 @@
-export interface ResponseAnime {
-  data: IAnime[];
-  meta: Meta;
-}
-
 export interface IAnime {
   id: number;
   name: string;
@@ -11,7 +6,7 @@ export interface IAnime {
   desc: string;
   race: string;
   archetype: string;
-  card_sets?: CardSet[];
+  card_sets: CardSet[];
   card_images: CardImage[];
   card_prices: CardPrice[];
 }
@@ -37,14 +32,4 @@ export interface CardSet {
   set_rarity: string;
   set_rarity_code: string;
   set_price: string;
-}
-
-export interface Meta {
-  current_rows: number;
-  total_rows: number;
-  rows_remaining: number;
-  total_pages: number;
-  pages_remaining: number;
-  next_page: string;
-  next_page_offset: number;
 }

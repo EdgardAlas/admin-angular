@@ -1,24 +1,8 @@
-<!-- <div class="container">
-  <app-buscar (buscar)="onScroll((a = $event))"></app-buscar>
-  <div
-    class="lista px-3"
-    infiniteScroll
-    [infiniteScrollDistance]="2"
-    [infiniteScrollThrottle]="100"
-    (scrolled)="onScroll(a)"
-  >
-    <div class="cards">
-      <ng-container *ngFor="let x of resultados">
-        <app-card [card]="x"></app-card>
-      </ng-container>
-    </div>
-  </div>
-</div>
- -->
-
 <div class="container-fluid">
-  <app-page-title title="Anime" [breadcrumbItems]="breadcrums"></app-page-title>
-
+  <app-page-title
+    title="Anime"
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
   <div class="row">
     <div class="col-12">
       <div class="card">
@@ -37,23 +21,26 @@
                 </div>
               </div>
             </div>
-
+            <div class="col-sm-8">
+              <div class="text-sm-end"></div>
+            </div>
             <!-- end col-->
           </div>
 
-          <!-- ScrollTable -->
+          <!-- Table data -->
           <div
-            class="lista px-3"
+            class="lista"
             infiniteScroll
             [infiniteScrollDistance]="2"
             [infiniteScrollThrottle]="100"
             (scrolled)="onScroll()"
           >
             <div class="cards">
-              <ng-container *ngFor="let x of cards">
-                <app-card [card]="x"></app-card>
+              <ng-container *ngFor="let item of cards">
+                <app-card [card]="item"></app-card>
               </ng-container>
             </div>
+            <hr />
           </div>
         </div>
       </div>

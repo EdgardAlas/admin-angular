@@ -1,27 +1,29 @@
-import { Component, EventEmitter, OnInit, Output, inject } from "@angular/core";
-import { FormControl } from "@angular/forms";
-import { debounceTime } from "rxjs/operators";
-import { AnimeService } from "src/app/modules/anime/service/anime.service";
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { AnimeService } from '../../service/anime.service';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
-  selector: "app-buscar",
-  templateUrl: "./buscar.component.html",
-  styleUrls: ["./buscar.component.scss"],
+  selector: 'app-buscar',
+  templateUrl: './buscar.component.html',
+  styleUrls: ['./buscar.component.scss']
 })
 export class BuscarComponent implements OnInit {
+  cardText = new FormControl('');
   @Output() buscar = new EventEmitter<string | null>();
-  cardText = new FormControl("");
-
-  constructor(private animeService: AnimeService) {}
+  constructor(private animeService: AnimeService) { }
 
   ngOnInit(): void {
-    this.inputoReactivo();
+    this.inputReactivo();
   }
 
-  inputoReactivo() {
-    this.cardText.valueChanges.pipe(debounceTime(300)).subscribe((value) => {
-      this.buscar.emit(value);
-    });
+  inputReactivo() {
+    this.cardText.valueChanges
+      .pipe(debounceTime(1500)
+      ).subscribe((res) => {
+        this.buscar.emit(res);
+      })
     this.buscar.emit();
   }
+
 }

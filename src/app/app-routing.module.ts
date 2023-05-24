@@ -28,6 +28,15 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: "empleado",
+    component: LayoutComponent,
+    loadChildren: () =>
+      import("./modules/empleado/empleado.module").then(
+        (m) => m.EmpleadoModule
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
     path: "pages",
     loadChildren: () =>
       import("./extrapages/extrapages.module").then((m) => m.ExtrapagesModule),
