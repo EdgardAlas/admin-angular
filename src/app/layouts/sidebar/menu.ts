@@ -7,6 +7,40 @@ export const MENU: MenuItem[] = [
     isTitle: true,
   },
   {
+    id: 130,
+    label: "Otros",
+    icon: "bx-health",
+    subItems: [
+      {
+        id: 131,
+        label: "Paginacion",
+        link: "/anime/mostrar",
+        parentId: 130,
+      },
+      {
+        id: 133,
+        label: "Anime",
+        link: "/anime/listar",
+        parentId: 130,
+      },
+      {
+        id: 134,
+        label: "Empleados",
+        link: "/empleados/listar",
+      },
+      {
+        id: 135,
+        label: "Bibliotecas",
+        link: "/biblioteca/listar",
+      },
+      {
+        id: 136,
+        label: "Libros",
+        link: "/libros/listar",
+      },
+    ],
+  },
+  {
     id: 2,
     label: "MENUITEMS.DASHBOARDS.TEXT",
     icon: "bx-home-circle",
@@ -27,6 +61,7 @@ export const MENU: MenuItem[] = [
         link: "/dashboards/saas",
         parentId: 2,
       },
+
       {
         id: 5,
         label: "MENUITEMS.DASHBOARDS.LIST.CRYPTO",
@@ -820,25 +855,6 @@ export const MENU: MenuItem[] = [
             parentId: 127,
           },
         ],
-      },
-    ],
-  },
-  {
-    id: 130,
-    label: "Otros",
-    icon: "bx-health",
-    subItems: [
-      {
-        id: 131,
-        label: "Paginacion",
-        link: "/anime/mostrar",
-        parentId: 130,
-      },
-      {
-        id: 133,
-        label: "Anime",
-        link: "/anime/listar",
-        parentId: 130,
       },
     ],
   },

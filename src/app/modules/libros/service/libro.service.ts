@@ -2,18 +2,16 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import {
-  Biblioteca,
-  BibliotecaResponse,
-} from "src/app/modules/biblioteca/interface/biblioteca";
+import { Libro } from "src/app/modules/biblioteca/interface/biblioteca";
+import { LibrosResponse } from "src/app/modules/libros/interface/libro";
 
 @Injectable({
   providedIn: "root",
 })
-export class BibliotecaService {
-  url = "http://localhost:8080/bibliotecas";
+export class LibroService {
+  url = "http://localhost:8080/libros";
   isLoading = false;
-  bibliotecas: BibliotecaResponse = {
+  libros: LibrosResponse = {
     content: [],
     pageable: {
       sort: {
@@ -44,46 +42,39 @@ export class BibliotecaService {
   empleadoForm = new FormGroup({
     id: new FormControl("", []),
     nombre: new FormControl("", [Validators.required]),
-    libros: new FormArray([]),
+    biblioteca: new FormGroup({
+      id: new FormControl("", []),
+      nombre: new FormControl("", [Validators.required]),
+    }),
   });
   nombreBuscar = "";
 
   constructor(private client: HttpClient, private modalService: NgbModal) {}
 
-  addLibro() {
-    const libros = this.empleadoForm.controls.libros as FormArray;
-    libros.push(
-      new FormGroup({
-        id: new FormControl("", []),
-        nombre: new FormControl("", [Validators.required]),
-      })
-    );
-  }
-
   getPage(page: number = 0, size: number = 10) {
     this.isLoading = true;
     return this.client
-      .get<BibliotecaResponse>(this.url, {
+      .get<LibrosResponse>(this.url, {
         params: {
           page: page.toString(),
           size: size.toString(),
         },
       })
       .subscribe((data) => {
-        this.bibliotecas = data;
+        this.libros = data;
         this.isLoading = false;
       });
   }
 
   getOne(id: number) {
-    return this.client.get<Biblioteca>(this.url + "/buscar/" + id);
+    return this.client.get<Libro>(this.url + "/buscar/" + id);
   }
 
-  create(empleado: Biblioteca) {
+  create(empleado: Libro) {
     return this.client.post(this.url, empleado);
   }
 
-  update(empleado: Biblioteca) {
+  update(empleado: Libro) {
     return this.client.put(this.url + "/" + empleado.id, empleado);
   }
 
@@ -93,9 +84,9 @@ export class BibliotecaService {
 
   searchByName(nombre: string) {
     return this.client
-      .get<BibliotecaResponse>(this.url + "/buscarPorNombre/" + nombre)
+      .get<LibrosResponse>(this.url + "/buscarPorNombre/" + nombre)
       .subscribe((data) => {
-        this.bibliotecas = data;
+        this.libros = data;
         this.isLoading = false;
       });
   }
@@ -122,24 +113,5 @@ export class BibliotecaService {
   hasErrorItemList(controlName: string, errorName: string, i: number) {
     const libros = this.empleadoForm.controls.libros as FormArray;
     return libros.controls[i].get(controlName).hasError(errorName);
-  }
-
-  async getAllBibliotecas() {
-    return new Promise<Biblioteca[]>((resolve, reject) => {
-      this.client
-        .get<BibliotecaResponse>(this.url, {
-          params: {
-            size: "1000000",
-          },
-        })
-        .subscribe({
-          next: (data) => {
-            resolve(data.content);
-          },
-          error: (error) => {
-            reject(error);
-          },
-        });
-    });
   }
 }

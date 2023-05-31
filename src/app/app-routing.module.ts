@@ -46,6 +46,13 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: "libros",
+    component: LayoutComponent,
+    loadChildren: () =>
+      import("./modules/libros/libros.module").then((m) => m.LibrosModule),
+    canActivate: [AuthGuard],
+  },
+  {
     path: "pages",
     loadChildren: () =>
       import("./extrapages/extrapages.module").then((m) => m.ExtrapagesModule),
