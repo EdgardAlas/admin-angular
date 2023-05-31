@@ -1,0 +1,31 @@
+<div class="row mb-2">
+  <div class="col-sm-4">
+    <div class="search-box me-2 mb-2 d-inline-block">
+      <form class="position-relative" (submit)="searchbyNombre($event)">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search..."
+          [(ngModel)]="nombreBuscar"
+          name="nombreBuscar"
+        />
+        <i class="bx bx-search-alt search-icon"></i>
+      </form>
+    </div>
+  </div>
+  <div class="col-sm-8">
+    <div class="text-sm-end">
+      <button
+        class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"
+        (click)="openModal(content, null)"
+      >
+        <i class="mdi mdi-plus me-1"></i> Nuevo
+      </button>
+    </div>
+  </div>
+  <!-- end col-->
+</div>
+
+<ng-template #content role="document" let-modal id="modal-empleado">
+  <app-modal-crear-editar [modal]="modal"></app-modal-crear-editar>
+</ng-template>

@@ -1,0 +1,83 @@
+<div class="modal-header">
+  <h5 class="modal-title mt-0">Empleado</h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-hidden="true"
+    (click)="modal.dismiss('Cross click')"
+  ></button>
+</div>
+<div class="modal-body">
+  <!-- Modal with 2 fields, nombre and apellido -->
+
+  <form [formGroup]="empleadoForm" (ngSubmit)="onSubmit()">
+    <div class="row gap-3">
+      <div class="col-12">
+        <input
+          [class]="errorClass('nombre')"
+          formControlName="nombre"
+          placeholder="Nombre"
+        />
+        <div class="invalid-feedback" *ngIf="hasError('nombre', 'required')">
+          <small>Este campo es requerido</small>
+        </div>
+      </div>
+
+      <div class="col-12 text-end" *ngIf="!empleadoForm.get('id').value">
+        <!-- //add libro -->
+        <button class="btn btn-primary" type="button" (click)="addLibro()">
+          <i class="fas fa-plus"></i> Agregar libro
+        </button>
+      </div>
+
+      <div class="col-12" *ngIf="!empleadoForm.get('id').value">
+        <table formArrayName="libros">
+          <thead>
+            <tr>
+              <th style="width: 90%">Libro</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let libro of libros.controls; let i = index">
+              <td [formGroupName]="i">
+                <input
+                  formControlName="nombre"
+                  placeholder="Libro"
+                  class="form-control"
+                />
+                <div
+                  class="invalid-feedback"
+                  *ngIf="hasErrorItemList('nombre', 'required', i)"
+                >
+                  <small>Este campo es requerido</small>
+                </div>
+              </td>
+              <td>
+                <button
+                  class="btn btn-danger"
+                  type="button"
+                  (click)="removeLibro(i)"
+                >
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer px-0">
+      <button
+        class="btn btn-secondary"
+        type="button"
+        (click)="modal.close('Close click')"
+      >
+        Close
+      </button>
+      <button class="btn btn-primary" type="submit">
+        {{ empleadoForm.value.id ? "Editar" : "Crear" }}
+      </button>
+    </div>
+  </form>
+</div>

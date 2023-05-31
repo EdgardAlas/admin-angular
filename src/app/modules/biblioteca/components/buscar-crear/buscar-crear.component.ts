@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormArray } from "@angular/forms";
+import { BibliotecaService } from "src/app/modules/biblioteca/service/biblioteca.service";
 import { Empleado } from "src/app/modules/empleado/interface/empleado";
 import { EmpleadoService } from "src/app/modules/empleado/service/empleado.service";
 
@@ -9,40 +10,38 @@ import { EmpleadoService } from "src/app/modules/empleado/service/empleado.servi
   styleUrls: ["./buscar-crear.component.scss"],
 })
 export class BuscarCrearComponent implements OnInit {
-  constructor(private empleadoService: EmpleadoService) {}
+  constructor(private bibliotecaServic: BibliotecaService) {}
 
   ngOnInit(): void {}
 
   openModal(content: any, empleado: Empleado) {
-    return this.empleadoService.openModal(content, () => {
+    return this.bibliotecaServic.openModal(content, () => {
       this.empleadoForm.markAsUntouched();
-      this.empleadoForm.reset({
-        id: "",
-        nombre: "",
-        libros: [],
-      });
+      (this.empleadoForm.controls.libros as FormArray).clear();
+
+      this.empleadoForm.reset();
     });
   }
 
   get empleadoForm() {
-    return this.empleadoService.empleadoForm;
+    return this.bibliotecaServic.empleadoForm;
   }
 
   get nombreBuscar() {
-    return this.empleadoService.nombreBuscar;
+    return this.bibliotecaServic.nombreBuscar;
   }
 
   set nombreBuscar(value: string) {
-    this.empleadoService.nombreBuscar = value;
+    this.bibliotecaServic.nombreBuscar = value;
   }
 
   searchbyNombre(event: Event) {
     event.preventDefault();
 
     if (this.nombreBuscar.length > 0) {
-      this.empleadoService.searchByName(this.nombreBuscar);
+      this.bibliotecaServic.searchByName(this.nombreBuscar);
     } else {
-      this.empleadoService.getPage();
+      this.bibliotecaServic.getPage();
     }
   }
 }

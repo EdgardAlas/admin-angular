@@ -12,6 +12,10 @@ import { TablaComponent } from "./pages/tabla/tabla.component";
 import { MostrarComponent } from "./pages/mostrar/mostrar.component";
 import { NgxPaginationModule } from "ngx-pagination";
 import { Ng2SearchPipeModule } from "ng2-search-filter";
+import { NgApexchartsModule } from "ng-apexcharts";
+import { ChartsModule } from "ng2-charts";
+import { GraficaAComponent } from "./grafica-a/grafica-a.component";
+import { GraficaBComponent } from "./grafica-b/grafica-b.component";
 
 @NgModule({
   declarations: [
@@ -20,6 +24,8 @@ import { Ng2SearchPipeModule } from "ng2-search-filter";
     BuscarComponent,
     TablaComponent,
     MostrarComponent,
+    GraficaAComponent,
+    GraficaBComponent,
   ],
   imports: [
     CommonModule,
@@ -30,7 +36,9 @@ import { Ng2SearchPipeModule } from "ng2-search-filter";
     ReactiveFormsModule,
     FormsModule, //!Para el Modal
     NgxPaginationModule, //!Para paginar
-    Ng2SearchPipeModule, //!Pa buscar
+    Ng2SearchPipeModule, //!Pa buscar,
+    NgApexchartsModule,
+    ChartsModule,
   ],
 })
 export class AnimeModule {}

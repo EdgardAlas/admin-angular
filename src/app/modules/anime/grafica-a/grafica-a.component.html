@@ -1,0 +1,14 @@
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">{{ title }}</h4>
+    <canvas
+      style="max-width: 100%"
+      baseChart
+      chartType="doughnut"
+      [data]="donaData"
+      [labels]="donaLabels"
+      [colors]="donaColors"
+      [title]="title"
+    ></canvas>
+  </div>
+</div>
