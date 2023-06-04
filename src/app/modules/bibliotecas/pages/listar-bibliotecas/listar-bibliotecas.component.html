@@ -18,15 +18,16 @@
                     name="tickets-table_length"
                     aria-controls="tickets-table"
                     name="pageSize"
-                    [(ngModel)]="service.pageSize"
                     class="form-control form-control-sm mx-2"
+                    [(ngModel)]="size"
+                    (change)="obtenerBibliotecas()"
                   >
                     <option [ngValue]="10">10</option>
                     <option [ngValue]="25">25</option>
                     <option [ngValue]="50">50</option>
                     <option [ngValue]="100">100</option>
                   </select>
-                  entries</label
+                  Registros</label
                 >
               </div>
             </div>
@@ -43,8 +44,8 @@
                     name="searchTerm"
                     class="form-control form-control-sm ms-2"
                     aria-controls="tickets-table"
-                    [(ngModel)]="service.searchTerm"
                 /></label>
+                <!-- [(ngModel)]="service.searchTerm" -->
               </div>
             </div>
             <!-- End search -->
@@ -58,56 +59,23 @@
               <thead>
                 <tr>
                   <th></th>
-                  <th sortable="name" (sort)="onSort($event)">Name</th>
-                  <th sortable="position" (sort)="onSort($event)">Position</th>
-                  <th sortable="office" (sort)="onSort($event)">Office</th>
-                  <th sortable="age" (sort)="onSort($event)">Age</th>
-                  <th sortable="date" (sort)="onSort($event)">Start date</th>
-                  <th sortable="salary" (sort)="onSort($event)">Salary</th>
-                  <th>Actions</th>
+                  <th sortable="name">ID</th>
+                  <th sortable="position">Biblioteca</th>
+                  <th sortable="office">Actions</th>
                 </tr>
               </thead>
-              <tbody *ngFor="let table of tables$ | async; let i = index">
+              <tbody *ngFor="let table of bibliotecas.content; let i = index">
                 <tr>
                   <td align="center">
-                    <a class="expand-row" (click)="changeValue(i)"> + </a>
+                    <a class="expand-row"> + </a>
                   </td>
                   <td>
-                    <ngb-highlight
-                      [result]="table.name"
-                      [term]="service.searchTerm"
-                    ></ngb-highlight>
+                    <ngb-highlight [result]="table.id"></ngb-highlight>
                   </td>
                   <td>
-                    <ngb-highlight
-                      [result]="table.position"
-                      [term]="service.searchTerm"
-                    ></ngb-highlight>
+                    <ngb-highlight [result]="table.nombre"></ngb-highlight>
                   </td>
-                  <td>
-                    <ngb-highlight
-                      [result]="table.office"
-                      [term]="service.searchTerm"
-                    ></ngb-highlight>
-                  </td>
-                  <td>
-                    <ngb-highlight
-                      [result]="table.age"
-                      [term]="service.searchTerm"
-                    ></ngb-highlight>
-                  </td>
-                  <td>
-                    <ngb-highlight
-                      [result]="table.date"
-                      [term]="service.searchTerm"
-                    ></ngb-highlight>
-                  </td>
-                  <td>
-                    <ngb-highlight
-                      [result]="table.salary"
-                      [term]="service.searchTerm"
-                    ></ngb-highlight>
-                  </td>
+
                   <td>
                     <div ngbDropdown placement="bottom-left">
                       <i
@@ -130,27 +98,57 @@
                     </div>
                   </td>
                 </tr>
-
-                <tr *ngIf="!hideme[i]" class="sub-table no-bg">
+                <!-- *ngIf="!hideme[i]" -->
+                <tr class="sub-table no-bg">
                   <td align="center"></td>
                   <td colspan="15" class="p-0">
                     <table class="table mb-0 table-striped">
                       <thead class="bg-dark text-white">
                         <tr>
-                          <th>CountryName</th>
-                          <th>Price/Unit</th>
-                          <th>Sales Account</th>
-                          <th>Buy Account</th>
+                          <th></th>
+                          <th></th>
+                          <th>Nombre</th>
+                          <th>
+                            <a style="cursor: pointer; padding: 20px">
+                              <i class="mdi mdi-plus"></i> Nuevo</a
+                            >
+                            <a style="cursor: pointer; padding: 20px">
+                              <i class="mdi mdi-plus"></i> Cambiar</a
+                            >
+                          </th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr
-                          *ngFor="let table of tables$ | async; let i = index"
-                        >
-                          <td>{{ table.name }}</td>
-                          <td>{{ table.name }}</td>
-                          <td>{{ table.name }}</td>
-                          <td>{{ table.name }}</td>
+                      <tbody id="bodyLibros">
+                        <tr *ngFor="let libro of table.libros; let i = index">
+                          <td></td>
+                          <td>{{ libro.id }}</td>
+                          <td>{{ libro.nombre }}</td>
+                          <td>
+                            <div ngbDropdown placement="bottom-left">
+                              <i
+                                class="mdi mdi-dots-vertical dropdown-toggle"
+                                ngbDropdownToggle
+                                data-toggle="dropdown"
+                                aria-expanded="true"
+                              ></i>
+                              <div
+                                class="dropdown-menu dropdown-menu-end"
+                                ngbDropdownMenu
+                              >
+                                <a
+                                  class="dropdown-item"
+                                  href="javascript: void(0);"
+                                  ><i class="fas fa-pencil"></i>Editar</a
+                                >
+                                <a
+                                  class="dropdown-item"
+                                  href="javascript: void(0);"
+                                  ><i class="fas fa-trash-alt text-danger"> </i
+                                  >borrar</a
+                                >
+                              </div>
+                            </div>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -170,35 +168,22 @@
                 role="status"
                 aria-live="polite"
               >
-                Showing {{ service.startIndex }} to {{ service.endIndex }} of
-                {{ service.totalRecords }}
-                entries
+                Mostrando 10 de 100 registros
               </div>
             </div>
             <!-- Pagination -->
             <div class="col-sm-12 col-md-5">
               <div class="text-md-right float-md-end pagination-rounded">
-                <ngb-pagination
+                <!-- <ngb-pagination
                   [collectionSize]="total$ | async"
                   [(page)]="service.page"
                   [pageSize]="service.pageSize"
                 >
-                </ngb-pagination>
+                </ngb-pagination> -->
               </div>
             </div>
             <!-- End Pagination -->
           </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Editable Table</h4>
-          <p class="card-sub-title">Example of editable table.</p>
-          <ng2-smart-table
-            [settings]="settings"
-            [source]="editableTable"
-          ></ng2-smart-table>
         </div>
       </div>
     </div>

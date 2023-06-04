@@ -1,10 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Biblioteca } from "src/app/modules/biblioteca/interface/biblioteca";
-import { BibliotecaService } from "src/app/modules/biblioteca/service/biblioteca.service";
-import { Empleado } from "src/app/modules/empleado/interface/empleado";
-import { EmpleadoService } from "src/app/modules/empleado/service/empleado.service";
 import { LibroService } from "src/app/modules/libros/service/libro.service";
 import Swal from "sweetalert2";
 
@@ -14,10 +10,7 @@ import Swal from "sweetalert2";
   styleUrls: ["./tabla.component.scss"],
 })
 export class TablaComponent implements OnInit {
-  constructor(
-    private libroService: LibroService,
-    private modalService: NgbModal
-  ) {}
+  constructor(private libroService: LibroService) {}
 
   ngOnInit(): void {}
 

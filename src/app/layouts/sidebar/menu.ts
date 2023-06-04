@@ -29,6 +29,11 @@ export const MENU: MenuItem[] = [
         link: "/empleados/listar",
       },
       {
+        id: 136,
+        label: "Bibliotecas 2",
+        link: "/bibliotecas/listar",
+      },
+      {
         id: 135,
         label: "Bibliotecas",
         link: "/biblioteca/listar",
